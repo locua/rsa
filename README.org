@@ -3,17 +3,23 @@
 Usage:
 
 #+begin_src bash
-$ ./rsa.py -h
+$./rsa.py -h
 Usage: rsa.py [options]
+
+Simple command line program for RSA encryption
 
 Options:
   -h, --help            show this help message and exit
   -g, --generate-keys   Generate public and private keys
   -e MESSAGE, --encrypt=MESSAGE
-                        encrypt message with public key. Takes message and
-                        public key file.
+                        encrypt message
   -d CIPHER_TEXT, --decrypt=CIPHER_TEXT
                         decrpyt message
+  -f FILENAME_PUB, --load_key_pub=FILENAME_PUB
+                        Load public key file
+  -F FILENAME_PRIVATE, --load_key=FILENAME_PRIVATE
+                        Load private key file
+
 #+end_src
 
 You may need to make the file executable with:

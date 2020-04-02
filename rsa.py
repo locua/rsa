@@ -68,8 +68,8 @@ class RSA:
 
 def main():
     # option argument parser
-    # parser = argparse.ArgumentParser(description='Simple RSA implementation')
     parser = OptionParser()
+    parser.description = "Simple command line program for RSA encryption"
     parser.add_option("-g", "--generate-keys", help="Generate public and private keys",action='store_true', dest='generate', default=False)
     parser.add_option("-e", "--encrypt",dest='message', default=None, help="encrypt message")
     parser.add_option("-d", "--decrypt",dest='cipher_text', default=None, type='int', help="decrpyt message")
@@ -116,7 +116,7 @@ def main():
                     print(message)
         else:
             print("-----------------------\nERROR")
-            print("Also requires you to specifiy a file containing public key using -f \nand a file containing the private key with -F")
+            print("Also requires you to specify a file containing public key using -f \nand a file containing the private key with -F")
     # No options given
     else:
         print("run: python3 rsa.py -h \n...to see use")
