@@ -15,3 +15,9 @@ Options:
   -d CIPHER_TEXT, --decrypt=CIPHER_TEXT
                         decrpyt message
 #+end_src
+
+You may need to make the file executable with:
+ 
+#+begin_src bash
+chmod +x rsa.py
+#+end_src

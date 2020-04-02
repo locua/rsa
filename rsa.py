@@ -72,7 +72,7 @@ def main():
     # parser = argparse.ArgumentParser(description='Simple RSA implementation')
     parser = OptionParser()
     parser.add_option("-g", "--generate-keys", help="Generate public and private keys",action='store_true', dest='generate', default=False)
-    parser.add_option("-e", "--encrypt",dest='message', default=None, help="encrypt message with public key. Takes message and public key file.")
+    parser.add_option("-e", "--encrypt",dest='message', default=None, help="encrypt message")
     parser.add_option("-d", "--decrypt",dest='cipher_text', default=None, type='int', help="decrpyt message")
     # parser args
     (options, args)  = parser.parse_args()
