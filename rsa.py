@@ -10,20 +10,44 @@ class RSA:
     def __init__(self):
         pass
 
-    def encrypt(self, message, pub):
-        m = self.string_to_int(message)
-        block_size = None
-        assert m < pub["n"]
-        # print("message: ", m)
-        cipher = pow(m, pub["e"], pub["n"])
-        print("c: " , cipher, "\n")
-        return cipher
+    def encrypt(self, message, pub, blocksize=30):
+        if (len(message)<blocksize):
+            blocksize=len(message)//2
+        msplit = [message[i:i+blocksize] for i in range(0,len(message), blocksize)]
+        print(msplit)
+        cipher=""
+        c_block_lengths=[]
+        for m in msplit:
+            m = self.string_to_int(m)
+            assert m < pub["n"]
+            c_ = pow(m, pub["e"], pub["n"])
+            c_=str(c_)
+            c_block_lengths.append(len(c_))
+            cipher+=c_
+        cipherfull=[cipher, c_block_lengths]
+        print("c: " , cipherfull)
+        return cipherfull
 
-    def decrypt(self, c, d, pub):
-        # m = c^d mod n
-        assert c < pub["n"]
-        plaintext = pow(c, d, pub["n"])
-        return self.int_to_string(plaintext)
+    def decrypt(self, cipher, d, pub):
+        ciphertext=cipher[0]
+        blengths=cipher[1]
+        # Cumulative block length
+        cum_blength=0
+        plainout=''
+        for i, blength in enumerate(blengths):
+            # Splitting ciphertext into blocks
+            if(i==0):
+                c=ciphertext[:blength]
+            elif(i==len(blengths)-1):
+                c=ciphertext[cum_blength:]
+            else:
+                c=ciphertext[cum_blength:cum_blength+blength]
+            cum_blength+=blength
+            c=int(c)
+            # Decrypt
+            plaintext = self.int_to_string(pow(c, d, pub["n"]))
+            plainout+=plaintext
+        return plainout
 
     def string_to_int(self, s):
         # https://stackoverflow.com/questions/12625627/python3-convert-unicode-string-to-int-representation
@@ -46,7 +70,7 @@ class RSA:
         # computer n = p*q
         n = p*q
         r = (p - 1) * (q - 1)
-        print("SIZE OF r in bits", sys.getsizeof(r)*8)
+        # print("SIZE OF r in bits", sys.getsizeof(r)*8)
         # choose large prime e: 1 < e < r
         e = randbelow(r)
         e = 11
@@ -58,6 +82,8 @@ class RSA:
 
         d = modinv(e, r)
         print("Size of d in bits", sys.getsizeof(d)*8)
+        print("Size of e in bits", sys.getsizeof(e)*8)
+        print("Size of n in bits", sys.getsizeof(n)*8)
         # keeps d private publish pair(e, n) {public key
         public = {"e" : e, "n": n}
         private = d

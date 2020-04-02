@@ -38,7 +38,6 @@ Private key stored in key_rsa. Keep this secret!
 
 # Encrypt
 $ ./rsa.py -e "hello world" -f key_rsa.pub
-message:  126207244316550804821666916
 c:  43172238243216872898641139577778793630868727550085006752011
 
 # Decrypt
