@@ -3,14 +3,17 @@
 Usage:
 
 #+begin_src bash
-$./rsa.py -h
+$ ./rsa.py -h
 Usage: rsa.py [options]
 
 Simple command line program for RSA encryption
 
 Options:
   -h, --help            show this help message and exit
-  -g, --generate-keys   Generate public and private keys
+  -g, --generate-keys   Generate public and private keys optionally specify
+                        the size of p and q with --pqsize
+  -p PQSIZE, --pqsize=PQSIZE
+                        Specify the size of p and q
   -e MESSAGE, --encrypt=MESSAGE
                         encrypt message
   -d CIPHER_TEXT, --decrypt=CIPHER_TEXT
