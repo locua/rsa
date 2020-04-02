@@ -99,8 +99,8 @@ def main():
     parser.description = "Simple command line program for RSA encryption"
     parser.add_option("-g", "--generate-keys", help="Generate public and private keys optionally specify the size of p and q with --pqsize",action='store_true', dest='generate', default=False)
     parser.add_option("-p", "--pqsize", help="Specify the size of p and q", dest='pqsize', type='int')
-    parser.add_option("-e", "--encrypt",dest='message', default=None, help="encrypt message")
-    parser.add_option("-d", "--decrypt",dest='ciphername', default=None, help="decrpyt message")
+    parser.add_option("-e", "--encrypt",dest='message_file', default=None, help="encrypt message in file")
+    parser.add_option("-d", "--decrypt",dest='cipher_file', default=None, help="decrpyt message")
     parser.add_option("-f", "--loadkey/s",dest='filenames', help="Load key files")
     # parser args
     (options, args)  = parser.parse_args()
@@ -125,10 +125,10 @@ def main():
         print("Private key stored in key_rsa.", "Keep this secret!")
         print("----------------------------\n")
     # Encrypt
-    elif (options.message!=None):
+    elif (options.message_file!=None):
         if(options.filenames):
             with open(options.filenames) as json_file:
-                with open(options.message) as plaintext:
+                with open(options.message_file) as plaintext:
                     # message = open(plaintext, "r")
                     m = plaintext.read()
                     public = json.load(json_file)
@@ -137,7 +137,7 @@ def main():
         else:
             print("Also requires you to specifiy a file containing public key using -f")
     # Decrypt
-    elif (options.ciphername!=None):
+    elif (options.cipher_file!=None):
         if(options.filenames):
             filename_pub=options.filenames
             if (args):
@@ -148,7 +148,7 @@ def main():
             with open(filename_pub) as public:
                 public = json.load(public)
                 with open(filename_private) as private:
-                    with open(options.ciphername) as ciphertext:
+                    with open(options.cipher_file) as ciphertext:
                         c=json.load(ciphertext)
                         private = json.load(private)
                         message=rsa.decrypt(c, private["private"], public)

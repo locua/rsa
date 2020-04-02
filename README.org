@@ -14,9 +14,9 @@ Options:
                         the size of p and q with --pqsize
   -p PQSIZE, --pqsize=PQSIZE
                         Specify the size of p and q
-  -e MESSAGE, --encrypt=MESSAGE
-                        encrypt message
-  -d CIPHERNAME, --decrypt=CIPHERNAME
+  -e MESSAGE_FILE, --encrypt=MESSAGE_FILE
+                        encrypt message in file
+  -d CIPHER_FILE, --decrypt=CIPHER_FILE
                         decrpyt message
   -f FILENAMES, --loadkey/s=FILENAMES
                         Load key files
@@ -42,6 +42,10 @@ Generated file cipher.txt
 # Decrypt
 $ ./rsa.py -d cipher.txt -f key_rsa.pub key_rsa
 hello world
+
+# Brute force
+$ ./charlie.py -m cipher.txt key_rsa.pub
+...
 #+end_src
 
 You may need to make the file executable with:
