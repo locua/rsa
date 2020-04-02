@@ -1,20 +1,12 @@
 #!/usr/bin/env python3
 
-import math,binascii,time
+import math,binascii,time,optparse
 
 def int_to_string(i):
     # convert int to hex, unhexlify and decode
     return binascii.unhexlify(hex(i)[2:]).decode('utf-8')
 
-
-def main():
-    m = None
-
-    n = 3608465047637242629433284562739288680666473853148238003731969352744088913173029887059209368182546072305683979030712863715362555581701780865911640917026098695351298832534940071819622879081037245479853
-
-    c = 1965590892478455214268055304180013142415892530501162143714324174119922498238783042067514682916751485276856049984094643079628729511222717787149438766839852883437950625324092934901222348757950950565693
-
-    d = 2624338216463449185042388772901300858666526438653264002714159529268428300489476281497606813223669868000115723941867367192711175364571495372019716490699690922789301212575039489188539941691414132264851
+def brute(m, d, n):
     while m is None:
         print(d)
         try:
@@ -26,6 +18,26 @@ def main():
         # time.sleep(.0001)
     print(m)
 
+def main():
+    m = None
+    parser=optparse.OptionParser()
+    parser.description="Brute force guess private key"
+    parser.add_option("-m", dest="args",nargs=2,help="Specifiy cipher text to decrypt and public key")
+
+    (options, args) = parser.parse_args()
+
+    if(options.args):
+        print(options.args)
+        c=open(options.args[0], "r")
+        cipher=c.read()
+        k=open(options.args[1], "r")
+        public_key=k.read()
+        print(cipher)
+        print(public_key)
+    else:
+        print("")
+
+    # brute()
 
 # execute main
 if __name__ == "__main__":
