@@ -32,18 +32,17 @@ class RSA:
         # encode as utf-8, convert bytes to hexcodes as bytestring...
         # and convert to int specifying base 16(hex)
         i  = int(binascii.hexlify(s.encode('utf-8')), 16)
-        #print(i)
         return i
 
     def int_to_string(self, i):
         # convert int to hex, unhexlify and decode
         return binascii.unhexlify(hex(i)[2:]).decode('utf-8')
 
-    def generateKeys(self, keysize=870):
+    def generateKeys(self, pqsize=870):
         # generate two large primes p and q (each approx 100 digits)
-        p = generate_prime_number(keysize)
+        p = generate_prime_number(pqsize)
         #print(len(str(p)))
-        q = generate_prime_number(keysize)
+        q = generate_prime_number(pqsize)
         #print(len(str(q)))
         # computer n = p*q
         n = p*q
@@ -70,7 +69,8 @@ def main():
     # option argument parser
     parser = OptionParser()
     parser.description = "Simple command line program for RSA encryption"
-    parser.add_option("-g", "--generate-keys", help="Generate public and private keys",action='store_true', dest='generate', default=False)
+    parser.add_option("-g", "--generate-keys", help="Generate public and private keys optionally specify the size of p and q with --pqsize",action='store_true', dest='generate', default=False)
+    parser.add_option("-p", "--pqsize", help="Specify the size of p and q", dest='pqsize', type='int')
     parser.add_option("-e", "--encrypt",dest='message', default=None, help="encrypt message")
     parser.add_option("-d", "--decrypt",dest='cipher_text', default=None, type='int', help="decrpyt message")
     parser.add_option("-f", "--load_key_pub",dest='filename_pub', default=None, type='string', help="Load public key file")
@@ -81,9 +81,12 @@ def main():
     rsa = RSA()
     # Generate keys
     if (options.generate==True):
+        pqsize=380
+        if(options.pqsize!=None):
+            pqsize=options.pqsize
         print("\nGenerating keys")
         print("----------------------------")
-        public, private = rsa.generateKeys(300)
+        public, private = rsa.generateKeys(pqsize)
         with open("key_rsa.pub", 'w') as outfile:
             json.dump(public, outfile)
         private={"private":private}
