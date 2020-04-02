@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 import binascii, sys, json
 from optparse import OptionParser
 from helpers import *
@@ -15,7 +14,7 @@ class RSA:
         m = self.string_to_int(message)
         block_size = None
         assert m < pub["n"]
-        print("message: ", m)
+        # print("message: ", m)
         cipher = pow(m, pub["e"], pub["n"])
         print("c: " , cipher, "\n")
         return cipher

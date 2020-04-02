@@ -23,6 +23,27 @@ Options:
   -F FILENAME_PRIVATE, --load_key=FILENAME_PRIVATE
                         Load private key file
 
+# Generate
+$ ./rsa.py -g -pq 100
+
+Generating keys
+----------------------------
+SIZE OF r in bits 896
+Size of d in bits 896
+----------------------------
+Generated keys!
+Public key stored in key_rsa.pub
+Private key stored in key_rsa. Keep this secret!
+----------------------------
+
+# Encrypt
+$ ./rsa.py -e "hello world" -f key_rsa.pub
+message:  126207244316550804821666916
+c:  43172238243216872898641139577778793630868727550085006752011
+
+# Decrypt
+$ ./rsa.py -d 43172238243216872898641139577778793630868727550085006752011 -f key_rsa.pub -F key_rsa
+hello world
 #+end_src
 
 You may need to make the file executable with:
