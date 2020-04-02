@@ -38,7 +38,7 @@ Private key stored in key_rsa. Keep this secret!
 $ ./rsa.py -e plaintext.txt -f key_rsa.pub
 
 # Decrypt
-$ ./rsa.py -d cipher.txt -f key_rsa.pub -F key_rsa
+$ ./rsa.py -d cipher.txt -f key_rsa.pub key_rsa
 hello world
 #+end_src
 
