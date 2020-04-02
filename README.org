@@ -1,0 +1,17 @@
+* RSA implementation in python3
+
+Usage:
+
+#+begin_src bash
+$ ./rsa.py -h
+Usage: rsa.py [options]
+
+Options:
+  -h, --help            show this help message and exit
+  -g, --generate-keys   Generate public and private keys
+  -e MESSAGE, --encrypt=MESSAGE
+                        encrypt message with public key. Takes message and
+                        public key file.
+  -d CIPHER_TEXT, --decrypt=CIPHER_TEXT
+                        decrpyt message
+#+end_src
