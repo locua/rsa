@@ -6,7 +6,6 @@ from random import randrange
 # Use secrets library for number generation
 from secrets import randbits, randbelow
 # euclidian algorithm
-
 def egcd(a, b):
     if a == 0:
         return (b, 0, 1)

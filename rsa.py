@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import binascii, sys, json
-from helpers import *
 from optparse import OptionParser
+from helpers import *
 
 class RSA:
     """
@@ -12,11 +12,10 @@ class RSA:
         pass
 
     def encrypt(self, message, pub):
-        print("message: ", message)
         m = self.string_to_int(message)
         block_size = None
         assert m < pub["n"]
-        print("m: ", m)
+        print("message: ", m)
         cipher = pow(m, pub["e"], pub["n"])
         print("c: " , cipher, "\n")
         return cipher
@@ -74,6 +73,8 @@ def main():
     parser.add_option("-g", "--generate-keys", help="Generate public and private keys",action='store_true', dest='generate', default=False)
     parser.add_option("-e", "--encrypt",dest='message', default=None, help="encrypt message")
     parser.add_option("-d", "--decrypt",dest='cipher_text', default=None, type='int', help="decrpyt message")
+    parser.add_option("-f", "--load_key_pub",dest='filename_pub', default=None, type='string', help="Load public key file")
+    parser.add_option("-F", "--load_key",dest='filename_private', default=None, type='string', help="Load private key file")
     # parser args
     (options, args)  = parser.parse_args()
     # rsa class
@@ -83,8 +84,6 @@ def main():
         print("\nGenerating keys")
         print("----------------------------")
         public, private = rsa.generateKeys(300)
-        # print("PUBLIC: ", public)
-        # print("Private: ", private)
         with open("key_rsa.pub", 'w') as outfile:
             json.dump(public, outfile)
         private={"private":private}
@@ -97,23 +96,30 @@ def main():
         print("----------------------------\n")
     # Encrypt
     elif (options.message!=None):
-        print(options.message)
-        filename='key_rsa.pub'
-        with open(filename) as json_file:
-            public = json.load(json_file)
-            cipher = rsa.encrypt(options.message, public)
+        if(options.filename_pub):
+            # filename='key_rsa.pub'
+            with open(options.filename_pub) as json_file:
+                public = json.load(json_file)
+                cipher = rsa.encrypt(options.message, public)
+        else:
+            print("Also requires you to specifiy a file containing public key using -f")
     # Decrypt
     elif (options.cipher_text!=None):
-        filename_pub='key_rsa.pub'
-        filename_private='key_rsa'
-        with open(filename_pub) as public:
-            public = json.load(public)
-            with open(filename_private) as private:
-                private = json.load(private)
-                message=rsa.decrypt(options.cipher_text, private["private"], public)
-                print(message)
+        if(options.filename_pub and options.filename_private):
+            filename_pub=options.filename_pub
+            filename_private=options.filename_private
+            with open(filename_pub) as public:
+                public = json.load(public)
+                with open(filename_private) as private:
+                    private = json.load(private)
+                    message=rsa.decrypt(options.cipher_text, private["private"], public)
+                    print(message)
+        else:
+            print("-----------------------\nERROR")
+            print("Also requires you to specifiy a file containing public key using -f \nand a file containing the private key with -F")
+    # No options given
     else:
-        print("python3 rsa.py -h \n...to see use")
+        print("run: python3 rsa.py -h \n...to see use")
 
 # execute main
 if __name__ == "__main__":
