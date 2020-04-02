@@ -14,23 +14,24 @@ class RSA:
         if (len(message)<blocksize):
             blocksize=len(message)//2
         msplit = [message[i:i+blocksize] for i in range(0,len(message), blocksize)]
-        print(msplit)
         cipher=""
-        c_block_lengths=[]
+        blengths=[]
         for m in msplit:
             m = self.string_to_int(m)
             assert m < pub["n"]
             c_ = pow(m, pub["e"], pub["n"])
             c_=str(c_)
-            c_block_lengths.append(len(c_))
+            blengths.append(len(c_))
             cipher+=c_
-        cipherfull=[cipher, c_block_lengths]
-        print("c: " , cipherfull)
+        cipherfull={"cipher":cipher, "block_lengths":blengths}
+        print(cipherfull)
+        with open("cipher.txt", "w") as outfile:
+            json.dump(cipherfull, outfile)
         return cipherfull
 
     def decrypt(self, cipher, d, pub):
-        ciphertext=cipher[0]
-        blengths=cipher[1]
+        ciphertext=cipher["cipher"]
+        blengths=cipher["block_lengths"]
         # Cumulative block length
         cum_blength=0
         plainout=''
@@ -47,6 +48,8 @@ class RSA:
             # Decrypt
             plaintext = self.int_to_string(pow(c, d, pub["n"]))
             plainout+=plaintext
+        outfile=open("plaintext.txt", "w")
+        outfile.write(plainout)
         return plainout
 
     def string_to_int(self, s):
@@ -97,9 +100,8 @@ def main():
     parser.add_option("-g", "--generate-keys", help="Generate public and private keys optionally specify the size of p and q with --pqsize",action='store_true', dest='generate', default=False)
     parser.add_option("-p", "--pqsize", help="Specify the size of p and q", dest='pqsize', type='int')
     parser.add_option("-e", "--encrypt",dest='message', default=None, help="encrypt message")
-    parser.add_option("-d", "--decrypt",dest='cipher_text', default=None, type='int', help="decrpyt message")
-    parser.add_option("-f", "--load_key_pub",dest='filename_pub', default=None, type='string', help="Load public key file")
-    parser.add_option("-F", "--load_key",dest='filename_private', default=None, type='string', help="Load private key file")
+    parser.add_option("-d", "--decrypt",dest='ciphername', default=None, help="decrpyt message")
+    parser.add_option("-f", "--loadkey/s",dest='filenames', help="Load key files")
     # parser args
     (options, args)  = parser.parse_args()
     # rsa class
@@ -124,27 +126,36 @@ def main():
         print("----------------------------\n")
     # Encrypt
     elif (options.message!=None):
-        if(options.filename_pub):
+        if(options.filenames):
             # filename='key_rsa.pub'
-            with open(options.filename_pub) as json_file:
-                public = json.load(json_file)
-                cipher = rsa.encrypt(options.message, public)
+            with open(options.filenames) as json_file:
+                with open(options.message) as plaintext:
+                    message = open("plaintext.txt", "r")
+                    m = message.read()
+                    public = json.load(json_file)
+                    cipher = rsa.encrypt(m, public)
         else:
             print("Also requires you to specifiy a file containing public key using -f")
     # Decrypt
-    elif (options.cipher_text!=None):
-        if(options.filename_pub and options.filename_private):
-            filename_pub=options.filename_pub
-            filename_private=options.filename_private
+    elif (options.ciphername!=None):
+        if(options.filenames):
+            filename_pub=options.filenames
+            if (args):
+                filename_private=args[0]
+            else:
+                print("ERROR please specify filename key private key.\n Eg. \n -f key_rsa.pub key_rsa")
+                sys.exit(1)
             with open(filename_pub) as public:
                 public = json.load(public)
                 with open(filename_private) as private:
-                    private = json.load(private)
-                    message=rsa.decrypt(options.cipher_text, private["private"], public)
-                    print(message)
+                    with open(options.ciphername) as ciphertext:
+                        c=json.load(ciphertext)
+                        private = json.load(private)
+                        message=rsa.decrypt(c, private["private"], public)
+                        print(message)
         else:
             print("-----------------------\nERROR")
-            print("Also requires you to specify a file containing public key using -f \nand a file containing the private key with -F")
+            print("Specifiy filenames for public and private keys")
     # No options given
     else:
         print("run: python3 rsa.py -h \n...to see use")

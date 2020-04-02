@@ -16,12 +16,10 @@ Options:
                         Specify the size of p and q
   -e MESSAGE, --encrypt=MESSAGE
                         encrypt message
-  -d CIPHER_TEXT, --decrypt=CIPHER_TEXT
+  -d CIPHERNAME, --decrypt=CIPHERNAME
                         decrpyt message
-  -f FILENAME_PUB, --load_key_pub=FILENAME_PUB
-                        Load public key file
-  -F FILENAME_PRIVATE, --load_key=FILENAME_PRIVATE
-                        Load private key file
+  -f FILENAMES, --loadkey/s=FILENAMES
+                        Load key files
 
 # Generate
 $ ./rsa.py -g -pq 100
