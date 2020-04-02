@@ -35,11 +35,10 @@ Private key stored in key_rsa. Keep this secret!
 ----------------------------
 
 # Encrypt
-$ ./rsa.py -e "hello world" -f key_rsa.pub
-c:  43172238243216872898641139577778793630868727550085006752011
+$ ./rsa.py -e plaintext.txt -f key_rsa.pub
 
 # Decrypt
-$ ./rsa.py -d 43172238243216872898641139577778793630868727550085006752011 -f key_rsa.pub -F key_rsa
+$ ./rsa.py -d cipher.txt -f key_rsa.pub -F key_rsa
 hello world
 #+end_src
 

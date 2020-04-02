@@ -12,7 +12,7 @@ class RSA:
 
     def encrypt(self, message, pub, blocksize=30):
         if (len(message)<blocksize):
-            blocksize=len(message)//2
+            blocksize=len(message)
         msplit = [message[i:i+blocksize] for i in range(0,len(message), blocksize)]
         cipher=""
         blengths=[]
@@ -24,9 +24,9 @@ class RSA:
             blengths.append(len(c_))
             cipher+=c_
         cipherfull={"cipher":cipher, "block_lengths":blengths}
-        print(cipherfull)
         with open("cipher.txt", "w") as outfile:
             json.dump(cipherfull, outfile)
+        print(cipher)
         return cipherfull
 
     def decrypt(self, cipher, d, pub):
@@ -127,13 +127,13 @@ def main():
     # Encrypt
     elif (options.message!=None):
         if(options.filenames):
-            # filename='key_rsa.pub'
             with open(options.filenames) as json_file:
                 with open(options.message) as plaintext:
-                    message = open("plaintext.txt", "r")
-                    m = message.read()
+                    # message = open(plaintext, "r")
+                    m = plaintext.read()
                     public = json.load(json_file)
                     cipher = rsa.encrypt(m, public)
+                    print("Generated file cipher.txt")
         else:
             print("Also requires you to specifiy a file containing public key using -f")
     # Decrypt
