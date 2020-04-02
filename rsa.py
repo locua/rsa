@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import binascii, sys, json
 from helpers import *
 from optparse import OptionParser
