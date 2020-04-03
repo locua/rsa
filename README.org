@@ -1,5 +1,7 @@
 * RSA implementation in python3
 
+Requires Python 3
+
 Usage:
 
 #+begin_src bash
