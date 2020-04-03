@@ -49,7 +49,6 @@ def brute(d, pub):
         # increment number of trys
         trys+=1
         ######## print trys
-        print("--------------------------------------------------------------------------------------------", end="\r")
         print("----------------- Number of trys %s -----------------------"% trys, end="\r")
 
     ############### print success message
