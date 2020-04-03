@@ -38,11 +38,11 @@ Private key stored in key_rsa. Keep this secret!
 $ ./rsa.py -e plaintext.txt -f key_rsa.pub
 Generated file cipher.json
 # Decrypt
-$ ./rsa.py -d cipher.txt -f key_rsa.pub key_rsa
+$ ./rsa.py -d cipher.json -f key_rsa.pub key_rsa
 Decrypted message and written to file decrypted.txt
 
 # Brute force
-$ ./charlie.py -m cipher.txt key_rsa.pub
+$ ./charlie.py -m cipher.json key_rsa.pub
 ...
 #+end_src
 
