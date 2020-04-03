@@ -11,15 +11,17 @@ class RSA:
         pass
 
     def encrypt(self, message, pub, blocksize=30):
-        message=message.strip()
+        # message=message.strip()
         if (len(message)<blocksize):
-            blocksize=len(message)
+            blocksize=len(message)//2
         msplit = [message[i:i+blocksize] for i in range(0,len(message), blocksize)]
         cipher=""
         blengths=[]
         for m in msplit:
             m = self.string_to_int(m)
-            assert m < pub["n"]
+            if (m > pub["n"]):
+                print("Please make the p and q size bigger or blocksize smaller")
+                assert m < pub["n"]
             c_ = pow(m, pub["e"], pub["n"])
             c_=str(c_)
             blengths.append(len(c_))
@@ -49,8 +51,8 @@ class RSA:
             plaintext = self.int_to_string(pow(c, d, pub["n"]))
             # print(plaintext)
             plainout+=plaintext
-        outfile=open("plaintext.txt", "w")
-        outfile.write(plainout)
+        # outfile=open("decrypted.txt", "w")
+        # outfile.write(plainout)
         return plainout
 
     def string_to_int(self, s):
