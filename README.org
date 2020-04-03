@@ -22,7 +22,7 @@ Options:
                         Load key files
 
 # Generate
-$ ./rsa.py -g -pq 100
+$ ./rsa.py -g -p 100
 
 Generating keys
 ----------------------------
@@ -36,12 +36,10 @@ Private key stored in key_rsa. Keep this secret!
 
 # Encrypt
 $ ./rsa.py -e plaintext.txt -f key_rsa.pub
-1253242813841223725143839996550463703312827439534922547873460865467040136136740457990555398728033021862984044133931817201163960990702275215526296127849491960406954455295726274466317005041786465898805172544014245833254723973358441
-Generated file cipher.txt
-
+Generated file cipher.json
 # Decrypt
 $ ./rsa.py -d cipher.txt -f key_rsa.pub key_rsa
-hello world
+Decrypted message and written to file decrypted.txt
 
 # Brute force
 $ ./charlie.py -m cipher.txt key_rsa.pub

@@ -11,6 +11,7 @@ class RSA:
         pass
 
     def encrypt(self, message, pub, blocksize=30):
+        message=message.strip()
         if (len(message)<blocksize):
             blocksize=len(message)
         msplit = [message[i:i+blocksize] for i in range(0,len(message), blocksize)]
@@ -24,9 +25,8 @@ class RSA:
             blengths.append(len(c_))
             cipher+=c_
         cipherfull={"cipher":cipher, "block_lengths":blengths}
-        with open("cipher.txt", "w") as outfile:
+        with open("cipher.json", "w") as outfile:
             json.dump(cipherfull, outfile)
-        print(cipher)
         return cipherfull
 
     def decrypt(self, cipher, d, pub):
@@ -47,6 +47,7 @@ class RSA:
             c=int(c)
             # Decrypt
             plaintext = self.int_to_string(pow(c, d, pub["n"]))
+            # print(plaintext)
             plainout+=plaintext
         outfile=open("plaintext.txt", "w")
         outfile.write(plainout)
@@ -61,8 +62,15 @@ class RSA:
         return i
 
     def int_to_string(self, i):
-        # convert int to hex, unhexlify and decode
-        return binascii.unhexlify(hex(i)[2:]).decode('utf-8')
+        # Convert to hex and check for odd string length
+        n = hex(i)[2:]
+        # if odd length pad with zero and return decoded string
+        if((len(n)%2)!=0):
+            n = '0%x'%int(n, 16)
+            return binascii.unhexlify(n).decode('utf-8')
+        else:
+            # return decoded string
+            return binascii.unhexlify(hex(i)[2:]).decode('utf-8')
 
     def generateKeys(self, pqsize=870):
         # generate two large primes p and q (each approx 100 digits)
@@ -129,11 +137,10 @@ def main():
         if(options.filenames):
             with open(options.filenames) as json_file:
                 with open(options.message_file) as plaintext:
-                    # message = open(plaintext, "r")
                     m = plaintext.read()
                     public = json.load(json_file)
                     cipher = rsa.encrypt(m, public)
-                    print("Generated file cipher.txt")
+                    print("Generated file cipher.json")
         else:
             print("Also requires you to specifiy a file containing public key using -f")
     # Decrypt
@@ -152,7 +159,9 @@ def main():
                         c=json.load(ciphertext)
                         private = json.load(private)
                         message=rsa.decrypt(c, private["private"], public)
-                        print(message)
+                        with open("decrypted.txt", "w") as decrypted:
+                            print("Decrypted message and written to file decrypted.txt")
+                            decrypted.write(message)
         else:
             print("-----------------------\nERROR")
             print("Specifiy filenames for public and private keys")
