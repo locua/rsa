@@ -16,12 +16,11 @@ def string_to_int(s):
 def brute(d, pub):
     """ Attempts to guess private key"""
     # Test message
-    m="Hello its me"
-    # Encrypt test message m
-    m = string_to_int(m)
     print("--------------------------------------------------------------------------------------------")
     print("---------------- Cipher test message -------------------------------------------------------")
     print("--------------------------------------------------------------------------------------------")
+    # Encrypt test message m
+    m=string_to_int("Hello its me")
     c_ = pow(m, pub["e"],pub["n"])
     print("------------- c: ", c_)
     print("--------------------------------------------------------------------------------------------")
@@ -50,8 +49,7 @@ def brute(d, pub):
         trys+=1
         ######## print trys
         print("----------------- Number of trys %s -----------------------"% trys, end="\r")
-
-    ############### print success message
+    ############### print success message ###############
     print("--------------------------------------------------------------------------------------------")
     print("--------------------------------------------------------------------------------------------")
     print("--------------------------------------------------------------------------------------------")
@@ -67,11 +65,13 @@ def brute(d, pub):
 def main():
     # Command line optinos parser
     m = None
+    # Options parser
     parser=optparse.OptionParser()
     parser.description="Brute force guess private key"
+    # Add option
     parser.add_option("-m", dest="filename",help="Specifiy cipher text to decrypt and public key")
+    # parse args and get options and arguments
     (options, args) = parser.parse_args()
-
     # If options -m
     if(options.filename):
         # open public key file
