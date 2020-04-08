@@ -3,7 +3,7 @@
 Requires Python 3
 
 Usage:
-
+Key generation, encryption and decryption...
 #+begin_src bash
 $ ./rsa.py -h
 # Usage: rsa.py [options]
@@ -42,7 +42,10 @@ $ ./rsa.py -e plaintext.txt -f key_rsa.pub
 # Decrypt
 $ ./rsa.py -d cipher.json -f key_rsa.pub key_rsa
 # Decrypted message and written to file decrypted.txt
+#+end_src
 
+Attack...
+#+begin_src bash
 # Brute force guess private key
 $ ./charlie.py -m key_rsa.pub
 # PUBLIC KEY:

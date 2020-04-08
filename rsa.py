@@ -56,7 +56,7 @@ class RSA:
                       - cipher
                       - private key
                       - public key
-                 Returns decrypted message and saves to file decrypted.txt
+                 Returns: decrypted message and saves to file decrypted.txt
         """
         # Get cipher and block lengths from cipher dict
         ciphertext=cipher["cipher"]
