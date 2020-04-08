@@ -148,7 +148,7 @@ def main():
     parser.add_option("-g", "--generate-keys", help="Generate public and private keys optionally specify the size of p and q with --pqsize",action='store_true', dest='generate', default=False)
     parser.add_option("-p", "--pqsize", help="Specify the size of p and q", dest='pqsize', type='int')
     parser.add_option("-e", "--encrypt",dest='message_file', default=None, help="encrypt message in file")
-    parser.add_option("-d", "--decrypt",dest='cipher_file', default=None, help="decrpyt message")
+    parser.add_option("-d", "--decrypt",dest='cipher_file', default=None, help="decrypt message")
     parser.add_option("-f", "--loadkey/s",dest='filenames', help="Load key files")
     # parser args
     (options, args)  = parser.parse_args()

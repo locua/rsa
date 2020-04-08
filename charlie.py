@@ -30,13 +30,14 @@ def brute(d, pub):
     m_correct=None
     # number of trys
     trys=0
-    d = 0
+    d = pub["n"]
     print(m)
-    while True:
+    while d > 0 :
         # Random d guess
         #d = secrets.randbits(10)
-        d= secrets.randbelow(pub["n"])
+        #d= secrets.randbelow(pub["n"])
         # print(d)
+        d-=1
         # Attempt decryption
         m_try = pow(c_, d, pub["n"])
         # If decryption works
@@ -56,6 +57,7 @@ def brute(d, pub):
         ######## print trys
         print("----------------- Number of trys %s -------------"% trys, end="\r")
     ############### print success message ###############
+    print("\n\n")
 
 
 def main():
